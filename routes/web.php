@@ -11,31 +11,46 @@ Route::get('/', function () {
 
 Route::get('/tere', function () {
 
-    $query = DB::table('books')->get();
+    $authors = Author::all();
 
-    $quearyRaw = DB::select('SELECT * FROM BOOKS WHERE ID = 1');
+    $authors->load('books.reviews', 'reviews');
 
-    $authorWithCount = DB::select('SELECT
-	a.name,
-	count(b.id) book_count
-FROM
-	authors a
-	LEFT JOIN books b ON a.id = b.author_id
-GROUP BY
-	a.id;
-');
+    //  $books = [];
 
-    $book = Book::find(1);
+    //  foreach ($authors as $author) {
+    //     $books = array_merge($books, $author->books->toarray());
+    //  }
 
-    $authorsBooks = Author::withCount('books')->get();
+    return view('tere', [
+        'authors' => $authors,
+    ]);
 
-    $author = Author::find(1);
-
-    $authorBooks = $author->books;
-
-    $bookAuthor = $book->author;
-
-    $authorWithBooks = Author::with('books')->get();
-
-    return $authorWithBooks;
 });
+
+//     $query = DB::table('books')->get();
+
+//     $quearyRaw = DB::select('SELECT * FROM BOOKS WHERE ID = 1');
+
+//     $authorWithCount = DB::select('SELECT
+// 	a.name,
+// 	count(b.id) book_count
+// FROM
+// 	authors a
+// 	LEFT JOIN books b ON a.id = b.author_id
+// GROUP BY
+// 	a.id;
+// ');
+
+//     $book = Book::find(1);
+
+//     $authorsBooks = Author::withCount('books')->get();
+
+//     $author = Author::find(1);
+
+//     $authorBooks = $author->books;
+
+//     $bookAuthor = $book->author;
+
+//     $authorWithBooks = Author::with('books')->get();
+
+//     return $authorWithBooks;

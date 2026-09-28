@@ -17,4 +17,9 @@ class Book extends Model
     {
         return $this->belongsTo(Author::class);
     }
+
+    public function reviews()
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
 }

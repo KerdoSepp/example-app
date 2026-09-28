@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Author;
 use App\Models\Book;
-use App\Models\User;
+use App\Models\Review;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,16 +17,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        Author::factory(100)
-            ->has(Book::factory()->count(5))
-            ->create();
-
+        Author::factory(50)
+            ->has(Review::factory(10))
+            ->create()
+            ->each(function (Author $author): void {
+                Book::factory(rand(1, 10))
+                    ->has(Review::factory(rand(1, 5)))
+                    ->for($author)
+                    ->create();
+            });
     }
 }
